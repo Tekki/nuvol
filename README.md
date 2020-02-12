@@ -1,24 +1,8 @@
-package Nuvol;
-use Mojo::Base -strict, -signatures;
-
-our $VERSION = '0.01';
-
-# functions
-
-sub connect ($configfile) {
-  require Nuvol::Connector;
-  return Nuvol::Connector->new($configfile);
-}
-
-1;
-
-=encoding utf8
-
-=head1 NAME
+# NAME
 
 Nuvol - A cloud toolkit
 
-=head1 SYNOPSIS
+# SYNOPSIS
 
     use Nuvol;
 
@@ -39,32 +23,30 @@ Nuvol - A cloud toolkit
     # download
     my $downloaded = $file_2->copy_to(path 'Downloaded Text.txt');
 
-=head1 DESCRIPTION
+# DESCRIPTION
 
-L<Nuvol> is a toolkit to work with cloud resources. For the beginning it supports L<Office
-365|Nuvol::Office365> and a L<Dummy service|Nuvol::Dummy> as cloud services and concentrates on files
+[Nuvol](https://metacpan.org/pod/Nuvol) is a toolkit to work with cloud resources. For the beginning it supports [Office
+365](https://metacpan.org/pod/Nuvol%3A%3AOffice365) and a [Dummy service](https://metacpan.org/pod/Nuvol%3A%3ADummy) as cloud services and concentrates on files
 and folders.
 
-=head1 FUNCTIONS
+# FUNCTIONS
 
 None of the functions is exported by default.
 
-=head2 connect
+## connect
 
     use Nuvol;
     $connector = Nuvol::connect($configfile);
 
-Opens a connection with an existing config file. Returns a L<Nuvol::Connector>.
+Opens a connection with an existing config file. Returns a [Nuvol::Connector](https://metacpan.org/pod/Nuvol%3A%3AConnector).
 
-=head1 AUTHOR & COPYRIGHT
+# AUTHOR & COPYRIGHT
 
 © 2013–2020 by Tekki (Rolf Stöckli).
 
 This program is free software, you can redistribute it and/or modify it under the terms of the
 Artistic License version 2.0.
 
-=head1 SEE ALSO
+# SEE ALSO
 
-L<Nuvol::Connector>, L<Nuvol::Drive>, L<Nuvol::Item>, L<Nuvol::Test>.
-
-=cut
+[Nuvol::Connector](https://metacpan.org/pod/Nuvol%3A%3AConnector), [Nuvol::Drive](https://metacpan.org/pod/Nuvol%3A%3ADrive), [Nuvol::Item](https://metacpan.org/pod/Nuvol%3A%3AItem), [Nuvol::Test](https://metacpan.org/pod/Nuvol%3A%3ATest).
