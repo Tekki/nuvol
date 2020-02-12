@@ -1,13 +1,12 @@
--pbp     # Start with Perl Best Practices
--w       # Show all warnings
--iob     # Ignore old breakpoints
--l=80    # 80 characters per line
--mbl=2   # No more than 2 blank lines
--i=2     # Indentation is 2 columns
--ci=2    # Continuation indentation is 2 columns
--vt=0    # Less vertical tightness
--pt=2    # High parenthesis tightness
--bt=2    # High brace tightness
--sbt=2   # High square bracket tightness
--wn      # Weld nested containers
--isbc    # Don't indent comments without leading space
+-pbp     # start with Perl Best Practices
+-l=100   # 100 characters per line
+-mbl=2   # no more than 2 blank lines
+-i=2     # indentation is 2 columns
+-ci=2    # continuation indentation is 2 columns
+-vt=0    # less vertical tightness
+-pt=2    # high parenthesis tightness
+-bt=2    # high brace tightness
+-sbt=2   # high square bracket tightness
+-isbc    # don't indent comments without leading space
+-asc     # add missing optional semicolons
+-ce      # cuddled else style
