@@ -1,6 +1,6 @@
 Revision history for perl distribution Nuvol
 
-0.02 Not Released
+0.02 2020-02-24T06:48:10+0100
   - Support for Dropbox
   - Method for realpath
   - Paths are absolute
