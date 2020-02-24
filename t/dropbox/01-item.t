@@ -2,12 +2,19 @@ use strict;
 
 use Test::More;
 
+use Mojo::JSON 'from_json';
 use Nuvol::Test::Item ':all';
 
 my $package = 'Nuvol::Item';
-my $service = 'Office365';
+my $service = 'Dropbox';
 
 my $item = build_test_item $service;
+
+ok my %dropbox_header = $item->_dropbox_header(abc=>'def'),
+  'Get internal Dropbox header';
+ok my $content = $dropbox_header{'Dropbox-API-Arg'}, 'Get content';
+is_deeply from_json($content), {abc=>'def'},
+  'Content is correct';
 
 test_basics $item, $service;
 
@@ -16,30 +23,25 @@ my @testvalues = (
     params   => {path => '/', type => 'Unknown'},
     realpath => '/',
     type     => 'Unknown',
-    url      => 'root'
+    url      => 'files'
   },
   {
     params   => {path => '/Nuvol Testfolder', type => 'Unknown'},
     realpath => '/Nuvol%20Testfolder',
     type     => 'Unknown',
-    url      => 'root:/Nuvol%20Testfolder:',
+    url      => 'files',
   },
   {
     params   => {path => '/Nuvol Testfolder/Subfolder', type => 'Unknown'},
     realpath => '/Nuvol%20Testfolder/Subfolder',
     type     => 'Unknown',
-    url      => 'root:/Nuvol%20Testfolder/Subfolder:',
+    url      => 'files',
   },
   {
     params   => {path => '/Nuvol/Testfile.txt', type => 'Unknown'},
     realpath => '/Nuvol/Testfile.txt',
     type     => 'Unknown',
-    url      => 'root:/Nuvol/Testfile.txt:'
-  },
-  {
-    params => {id => 'Abc1234', type => 'Unknown'},
-    type   => 'Unknown',
-    url    => 'items/Abc1234'
+    url      => 'files'
   },
 );
 

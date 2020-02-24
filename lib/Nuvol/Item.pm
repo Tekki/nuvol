@@ -1,6 +1,9 @@
 package Nuvol::Item;
 use Mojo::Base -base, -signatures;
 
+use Mojo::File;
+use Mojo::Path;
+
 # constructor
 
 sub new ($class, $drive, $params) {
@@ -8,6 +11,7 @@ sub new ($class, $drive, $params) {
   # check params
   Carp::croak 'Parameter metadata, id or path required!'
     unless $params->{metadata} || $params->{id} || $params->{path};
+  Carp::croak q|Path must start with '/'| if $params->{path} && $params->{path} !~ m|^/|;
 
   my $self = bless {drive => $drive}, $class;
 
@@ -30,7 +34,13 @@ sub drive ($self)  { return $self->{drive}; }
 sub exists ($self) { return $self->_check_existence; }
 sub file ($self)   { return $self->{type} eq 'File'; }
 sub folder ($self) { return $self->{type} eq 'Folder'; }
-sub type ($self)   { return $self->{type}; }
+
+sub realpath ($self) {
+  $self->{realpath} ||= Mojo::Path->new($self->_build_realpath)->leading_slash(1);
+  return $self->{realpath};
+}
+
+sub type ($self) { return $self->{type}; }
 
 # internal methods
 
@@ -62,6 +72,7 @@ Nuvol::Item - Item in a drive
     $item->exists;
     $item->file;
     $item->folder;
+    $item->realpath;
     $item->type;
 
     # files
@@ -87,6 +98,9 @@ Nuvol::Item - Item in a drive
 L<Nuvol::Item> is an item in a drive. It can be either a L<file|Nuvol::Role::File> or a
 L<folder|Nuvol::Role::Folder>.
 
+The syntax for drive items is oriented at L<Mojo::File>, so anyone familiar with this module will
+recognize most of the methods.
+
 =head1 CONSTRUCTOR
 
 =head2 via Nuvol::Drive
@@ -94,11 +108,12 @@ L<folder|Nuvol::Role::Folder>.
     use Nuvol;
     $drive = Nuvol::Connector->new($configfile)->drive(%drive_path);
 
-    $file   = $connector->item('path/to/file');
-    $folder = $connector->item('path/to/folder/');
+    $file   = $connector->item('/path/to/file');
+    $folder = $connector->item('/path/to/folder/');
 
-In daily use a L<Nuvol::Item> is created with L<Nuvol::Drive/item>. Paths with trailing slash are
-interpreted as L<folders|Nuvol::Role::Folder>, without slash as L<files|Nuvol::Role::File>.
+In daily use a L<Nuvol::Item> is created with L<Nuvol::Drive/item>. Paths must be absolute (starting
+with a slash). Paths with trailing slash are interpreted as L<folders|Nuvol::Role::Folder>, without
+slash as L<files|Nuvol::Role::File>.
 
 =head2 new
 
@@ -178,6 +193,20 @@ Returns a true value if the L</type> of the item is C<File>.
 
 Returns a true value if the L</type> of the item is C<Folder>.
 
+=head2 realpath
+
+    $realpath = $item->realpath;
+
+Getter for the full path of the item relative to its drive. Returns a L<Mojo::Path>.
+
+    # '/path%20to/item'
+    say $item->realpath;
+
+    # '/path to/item'
+    say $item->realpath->to_route;
+
+Real paths are URL escaped. L<Mojo::Path/to_route> returns the unescaped string.
+
 =head2 type
 
     $type = $item->type;
@@ -186,6 +215,6 @@ Getter for the type, can be C<File> or C<Folder>.
 
 =head1 SEE ALSO
 
-L<Nuvol::Drive>, L<Nuvol::Role::File>, L<Nuvol::Role::Folder>.
+L<Mojo::File>, L<Nuvol::Drive>, L<Nuvol::Role::File>, L<Nuvol::Role::Folder>.
 
 =cut
