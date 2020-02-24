@@ -30,10 +30,10 @@ sub new ($class, $drive, $params) {
 
 # methods
 
-sub drive ($self)  { return $self->{drive}; }
-sub exists ($self) { return $self->_check_existence; }
-sub file ($self)   { return $self->{type} eq 'File'; }
-sub folder ($self) { return $self->{type} eq 'Folder'; }
+sub drive ($self)     { return $self->{drive}; }
+sub exists ($self)    { return $self->_check_existence; }
+sub is_file ($self)   { return $self->{type} eq 'File'; }
+sub is_folder ($self) { return $self->{type} eq 'Folder'; }
 
 sub realpath ($self) {
   $self->{realpath} ||= Mojo::Path->new($self->_build_realpath)->leading_slash(1);
@@ -70,8 +70,8 @@ Nuvol::Item - Item in a drive
 
     $item->drive;
     $item->exists;
-    $item->file;
-    $item->folder;
+    $item->is_file;
+    $item->is_folder;
     $item->realpath;
     $item->type;
 
@@ -181,15 +181,15 @@ Getter for the drive. Returns a L<Nuvol::Drive>.
 
 Checks if the item exists.
 
-=head2 file
+=head2 is_file
 
-    $bool = $item->file;
+    $bool = $item->is_file;
 
 Returns a true value if the L</type> of the item is C<File>.
 
-=head2 folder
+=head2 is_folder
 
-    $bool = $item->folder;
+    $bool = $item->is_folder;
 
 Returns a true value if the L</type> of the item is C<Folder>.
 

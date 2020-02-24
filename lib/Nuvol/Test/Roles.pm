@@ -27,6 +27,8 @@ sub test_file_applied ($file, $service) {
 
   is $file->SERVICE, $service, "Service is $service";
   is $file->type, 'File', 'Type is File';
+  ok $file->is_file, 'It is a file';
+  ok !$file->is_folder, 'It is not a folder';
   ok $file->does($role), "Role $role applied";
   ok $file->does('Nuvol::Role::File'), 'File role applied';
 }
@@ -56,6 +58,8 @@ sub test_folder_applied ($folder, $service) {
 
   is $folder->SERVICE, $service, "Service is $service";
   is $folder->type, 'Folder', 'Type is Folder';
+  ok $folder->is_folder, 'It is a folder';
+  ok !$folder->is_file, 'It is not a file';
   ok $folder->does($role), "Role $role applied";
   ok $folder->does('Nuvol::Role::Folder'), 'Folder role applied';
 }
