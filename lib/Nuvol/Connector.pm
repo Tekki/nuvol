@@ -23,9 +23,9 @@ sub new ($class, $configfile, $service = '', $params = {}) {
   else {
     Carp::croak 'Service missing!' unless $service;
     $self->with_roles("Nuvol::${service}::Connector");
-    my %config_params = (configfile => $self->configfile, service => $self->SERVICE);
+    my %config_params = (service => $self->SERVICE);
     $config_params{$_} = $params->{$_} || $self->DEFAULTS->{$_}
-      for qw|app_id redirect_uri response_type scope|;
+      for keys $self->DEFAULTS->%*;
     Nuvol::Config->new($configfile, \%config_params);
   }
 
