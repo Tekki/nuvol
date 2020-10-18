@@ -24,8 +24,10 @@ sub new ($class, $configfile, $service = '', $params = {}) {
     Carp::croak 'Service missing!' unless $service;
     $self->with_roles("Nuvol::${service}::Connector");
     my %config_params = (service => $self->SERVICE);
-    $config_params{$_} = $params->{$_} || $self->DEFAULTS->{$_}
-      for keys $self->DEFAULTS->%*;
+    for (sort keys $self->DEFAULTS->%*) {
+      $config_params{$_} = $params->{$_} || $self->DEFAULTS->{$_}
+        or Carp::croak "Parameter $_ missing!";
+    }
     Nuvol::Config->new($configfile, \%config_params);
   }
 
