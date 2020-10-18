@@ -1,18 +1,17 @@
 package Nuvol;
 use Mojo::Base -strict, -signatures;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 # functions
 
 sub autoconnect ($configfile, $service) {
   require Nuvol::Connector;
-  my $connector = Nuvol::Connector->new($configfile, $service);
 
   if (-f $configfile) {
-    return $connector;
+    return Nuvol::Connector->new($configfile);
   } else {
-    return $connector->authenticate;
+    return Nuvol::Connector->new($configfile, $service)->authenticate;
   }
 }
 

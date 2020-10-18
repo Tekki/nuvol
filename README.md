@@ -8,17 +8,18 @@ Nuvol - A cloud toolkit
 
     # connect to a service
     my $configfile = '/path/to/configfile';
-    my $connector  = Nuvol::connect($configfile);
+    my $service    = '...';  # one of Dropbox, Office365
+    my $connector  = Nuvol::autoconnect($configfile, $service);
 
     # get main drive
     my $drive = $connector->drive('~');
 
     # upload a file
     use Mojo::File 'path';
-    my $file = $drive->item('My Text.txt')->copy_from(path 'Text on my PC.txt');
+    my $file = $drive->item('/My Text.txt')->copy_from(path 'Text on my PC.txt');
 
     # copy to another file
-    my $file_2 = $file->copy_to('path/to/Text Copy.txt');
+    my $file_2 = $file->copy_to('/path/to/Text Copy.txt');
 
     # download
     my $downloaded = $file_2->copy_to(path 'Downloaded Text.txt');
@@ -34,9 +35,9 @@ Nuvol - A cloud toolkit
 
 # DESCRIPTION
 
-[Nuvol](https://metacpan.org/pod/Nuvol) is a toolkit to manipulate files and folders on cloud services. For the beginning it
-supports [Dropbox](https://metacpan.org/pod/Nuvol%3A%3ADropbox), [Office 365](https://metacpan.org/pod/Nuvol%3A%3AOffice365), and a [Dummy
-service](https://metacpan.org/pod/Nuvol%3A%3ADummy).
+[Nuvol](https://metacpan.org/pod/Nuvol) is a toolkit to manipulate files and folders on cloud services. For
+the beginning it supports [Dropbox](https://metacpan.org/pod/Nuvol%3A%3ADropbox), [Office
+365](https://metacpan.org/pod/Nuvol%3A%3AOffice365), and a [Dummy service](https://metacpan.org/pod/Nuvol%3A%3ADummy).
 
     Nuvol
     └── Connector
@@ -81,14 +82,21 @@ access a service is stored in a config file.
 
 None of the functions is exported.
 
+## autoconnect
+
+    use Nuvol;
+    $connector = Nuvol::autoconnect($configfile, $service);
+
+Opens a connection using an existing config file, or starts an interactive
+authentication process if the file doesn't exist. Returns a
+[Nuvol::Connector](https://metacpan.org/pod/Nuvol%3A%3AConnector).
+
 ## connect
 
     use Nuvol;
     $connector = Nuvol::connect($configfile);
 
 Opens a connection using an existing config file. Returns a [Nuvol::Connector](https://metacpan.org/pod/Nuvol%3A%3AConnector).
-
-To create new config files ["new" in Nuvol::Connector](https://metacpan.org/pod/Nuvol%3A%3AConnector#new) has to be used.
 
 # AUTHOR & COPYRIGHT
 
